@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cadastro </title>
+</head>
+<body>
+    <h2> CADASTRO DE ALUNOS</h2>
+    <form method= "POST">
+        <input type="text" name="pesquisa" placeholder="pesquisar">
+        <input type="submit">
+    
+    </form>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>Nome</th>
+                <th>Endereço </th>
+                <th>Telefone </th>
+                <th>Deleta</th>
+                <th>Edita</th>
+            </tr>
+            <% listaAlunos.forEach(function(aluno){ %>
+            <tr>
+                <th><%=aluno._id%></th>
+                <th><%=aluno.nome%></th>
+                <th><%=aluno.endereco%> </th>
+                <th><%=aluno.telefone%> </th>
+                <th>Deleta</th>
+                <th>Edita</th>
+            </tr>
+            <% }) %>
+
+        </table>
+
+<h2> <%=msg%> </h2>
+
+</body>
+</html>
