@@ -1,48 +1,92 @@
-
-const express =require('express')
+const express = require('express')
 var app = express()
 var bodyparser = require('body-parser')
-var aluno = require('./model/aluno')
-var x;
+var Aluno = require('./model/aluno')
+var flash = require('flash')
 
 app.use(bodyparser.json())
-app.use(bodyparser.urlencoded({ extended:false}))
-
+app.use(bodyparser.urlencoded({ extended: false }))
 app.set('view engine','ejs')
 
-app.get('/',function(req,res){
-    res.render('listar.ejs',{})
-})
 
+//ROUTES
+//create get (OK)
 app.get('/add',function(req,res){
-    res.render('adicionar.ejs',{})
+    res.render('adicionar.ejs',{msg:''})
 })
 
+//create post (OK)
 app.post('/add',function(req,res){
-    var Aluno = new aluno({
-        Nome: req.body.nome,
-        Endereco: req.body.endereco,
-        Telefone: req.body.telefone
-        })
-    Aluno.save(function(err){
-     aluno.find({}).exec(function(e,docs){;
-       
+    var aluno = new Aluno({
+        nome: req.body.nome,
+        endereco: req.body.endereco,
+        telefone: req.body.telefone
+    })
+    aluno.save(function(err){
         if(err){
-            res.render('listar.ejs',{ msg : err, listaAlunos: docs})
-        }
-        else{
-            res.render('listar.ejs',{ msg : "salvo com sucesso", listaAlunos: docs})
+            res.render("adicionar.ejs",{msg: err})
+        }else{
+            res.render('adicionar.ejs',{msg: "Adicionado com sucesso!"})
         }
     })
-  })
-})
-app.get('/edit',function(req,res){
-    res.render('editar.ejs',{})
 })
 
+//read get (OK)
+app.get('/',function(req,res){
+    Aluno.find({}).exec(function(err,docs){
+        res.render('listar.ejs',{ listaAlunos: docs, msg:"" })
+    })    
+})
+
+//read post
+app.post('/',function(req,res){
+    Aluno.find(
+        {
+            nome: new RegExp(req.body.pesquisa,'i')
+        },
+    function(err,docs){
+        res.render('listar.ejs',{listaAlunos: docs, msg:""})
+    })
+    
+})
+
+//update get/
+app.get('/edit/:id',function(req,res){
+    Aluno.findById(req.params.id, function(err,docs){
+
+        res.render('editar.ejs',{aluno:docs})
+    })
+    
+})
 
 
 
+
+//update post
+app.post('/edit/:id',function(req,res){
+    Aluno.findByIdAndUpdate(req.body.id,
+    {
+        nome:req.body.nome,
+        endereco:req.body.endereco,
+        telefone:req.body.telefone
+    },function(err,docs)
+    {
+        res.redirect('/')
+    }
+    )
+})
+
+//delete get
+app.get('/del/:id',function(req,res){
+    Aluno.findByIdAndDelete(req.params.id,function(err){
+        if(err){
+            res.redirect('/')
+        }else{
+            res.redirect('/')
+        }
+    });
+})
 
 app.listen(3000,function(){
-     console.log("estou scutando na porta 3000")})
+    console.log("Estou escutando na porta 3000!!")
+})

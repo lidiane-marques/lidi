@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h2>ADICIONAR ALUNOS</h2>
-    <form method="POST">
-        Nome: <input type="text"  name="nome" placeholder="Nome"></br>
-        Endereço: <input type="text" name="endereco" placeholder="endereço"></br>
-        Telefone: <input type="text" name="telefone" placeholder="telefone">
-        <input type="submit">
-
-    </form>
-</body>
-</html>
+<%-include('cabecalho.ejs')%>
+<h1>Adicionando Alunos</h1>
+<form method="POST">
+    Nome: <input type="text" name="nome" placeholder="Nome"><br>
+    Endereço: <input type="text" name="endereco" placeholder="Endereço"><br>
+    Telefone: <input type="text" name="telefone" placeholder="Telefone"><br>
+    <input type="submit">
+</form>
+<h3><%=msg%></h3>
+<%-include('rodape.ejs')%>
